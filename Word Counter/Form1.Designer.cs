@@ -78,7 +78,7 @@
             this.statsBox.Controls.Add(this.numOfWordsLabel);
             this.statsBox.Controls.Add(this.mostCommonWordLabel);
             this.statsBox.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statsBox.Location = new System.Drawing.Point(256, 12);
+            this.statsBox.Location = new System.Drawing.Point(256, 20);
             this.statsBox.Name = "statsBox";
             this.statsBox.Size = new System.Drawing.Size(262, 100);
             this.statsBox.TabIndex = 1;
@@ -87,9 +87,9 @@
             // 
             // avgLettersPerWord
             // 
-            this.avgLettersPerWord.Location = new System.Drawing.Point(157, 72);
+            this.avgLettersPerWord.Location = new System.Drawing.Point(188, 72);
             this.avgLettersPerWord.Name = "avgLettersPerWord";
-            this.avgLettersPerWord.Size = new System.Drawing.Size(99, 14);
+            this.avgLettersPerWord.Size = new System.Drawing.Size(68, 14);
             this.avgLettersPerWord.TabIndex = 17;
             this.avgLettersPerWord.Text = "0";
             this.avgLettersPerWord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -99,9 +99,9 @@
             this.avgLettersPerWordLabel.AutoSize = true;
             this.avgLettersPerWordLabel.Location = new System.Drawing.Point(6, 72);
             this.avgLettersPerWordLabel.Name = "avgLettersPerWordLabel";
-            this.avgLettersPerWordLabel.Size = new System.Drawing.Size(130, 14);
+            this.avgLettersPerWordLabel.Size = new System.Drawing.Size(133, 14);
             this.avgLettersPerWordLabel.TabIndex = 16;
-            this.avgLettersPerWordLabel.Text = "Average letters per word";
+            this.avgLettersPerWordLabel.Text = "Average letters per word:";
             // 
             // numOfLetters
             // 
@@ -213,9 +213,9 @@
             this.extraChars.AutoSize = true;
             this.extraChars.Location = new System.Drawing.Point(6, 19);
             this.extraChars.Name = "extraChars";
-            this.extraChars.Size = new System.Drawing.Size(157, 18);
+            this.extraChars.Size = new System.Drawing.Size(233, 18);
             this.extraChars.TabIndex = 0;
-            this.extraChars.Text = "Include all extra characters";
+            this.extraChars.Text = "Include punctuation and special characters";
             this.extraChars.UseVisualStyleBackColor = true;
             // 
             // selectFile
@@ -279,7 +279,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(531, 533);
+            this.ClientSize = new System.Drawing.Size(531, 271);
             this.Controls.Add(this.fileName);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.clearFile);
