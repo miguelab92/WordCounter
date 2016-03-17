@@ -42,7 +42,7 @@ namespace Word_Counter
 
             //Starting path for file dialog
             oFileDialog.InitialDirectory = @"C:\Users\Soulin\Documents\
-                                Programs\cSharp\Test Project\Word Counter";
+                                Programs\cSharp\Word Counter";
 
             //If the user selects a file and not cancel
             if (oFileDialog.ShowDialog() == DialogResult.OK)
@@ -51,6 +51,12 @@ namespace Word_Counter
                 Cursor.Current = Cursors.WaitCursor;
                 //Open the text selected into the StreamReader
                 inputFile = File.OpenText(oFileDialog.FileName);
+
+                //Sets the label above the outputBox to the name of file by
+                //first taking the whole name, then splitting it by the \
+                //and taking the string after the last \ (the file name)
+                string[] fileNameArray = oFileDialog.FileName.Split('\\');
+                fileName.Text = fileNameArray[fileNameArray.Length - 1];
 
                 //If the user wants all chars
                 if (extraChars.Checked)
@@ -89,7 +95,6 @@ namespace Word_Counter
             string wordRead;
             //Character read
             char tempChar;
-            //
 
             //While not at the end of the stream
             while (!iFile.EndOfStream)
@@ -114,7 +119,8 @@ namespace Word_Counter
                         //Looks at the next char to check if its punctuation
                         tempChar = (char)iFile.Peek();
                     }
-                } else
+                }
+                else
                 {
                     //Else the letter is a non alphanumeric char
                     wordRead = tempChar.ToString();
@@ -218,8 +224,8 @@ namespace Word_Counter
             for (int i = 0; i < wordList.Count; i++)
             {
                 //If the object has a higher count than current highest count
-                if (wordList[i].getNum() > numOfCommonWord && 
-                    wordList[i].getWord() != "" )
+                if (wordList[i].getNum() > numOfCommonWord &&
+                    wordList[i].getWord() != "")
                 {
                     //It is our new most common word
                     getCommonWord = wordList[i].getWord();
@@ -229,14 +235,13 @@ namespace Word_Counter
 
                 //Add the number of times each word shows up
                 getNumOfWords += wordList[i].getNum();
-
                 //Add up the length of each word (letters in word)
                 getNumOfLetters += (wordList[i].getWord()).Length;
             }
 
             //Outputs results to labels
             //Outputs common word and its count
-            mostCommonWord.Text = getCommonWord + " " + 
+            mostCommonWord.Text = getCommonWord + " | " +
                 numOfCommonWord.ToString();
             //Outputs number of words
             numOfWords.Text = getNumOfWords.ToString();
@@ -246,7 +251,7 @@ namespace Word_Counter
             numOfLetters.Text = getNumOfLetters.ToString();
             //Gets the number of letters and divides them by number
             //of words to get average letters
-            avgLettersPerWord.Text = 
+            avgLettersPerWord.Text =
                 ((double)getNumOfLetters / getNumOfWords).ToString();
 
         }
@@ -264,30 +269,36 @@ namespace Word_Counter
             //If user selects file
             if (sFileDialog.ShowDialog() == DialogResult.OK)
             {
+                //Create the text file
                 outFile = File.CreateText(sFileDialog.FileName);
+
+                //Top of file. Shows file name and a bit of credits
+                outFile.WriteLine("Statistics for file: " + fileName.Text);
+                outFile.WriteLine("Gathered using Word Counter program.");
+                outFile.WriteLine("");
 
                 //Write out the label for most common word and its
                 //value
-                outFile.WriteLine(mostCommonWordLabel.Text + " " + 
+                outFile.WriteLine(mostCommonWordLabel.Text + " " +
                     mostCommonWord.Text);
                 //Write out the number of words in file and its result
-                outFile.WriteLine(numOfWordsLabel.Text + " " + 
+                outFile.WriteLine(numOfWordsLabel.Text + " " +
                     numOfWords.Text);
                 //Write out the number of unique words in file and its result
-                outFile.WriteLine(numOfUniqueWordsLabel.Text + " " + 
+                outFile.WriteLine(numOfUniqueWordsLabel.Text + " " +
                     numOfUniqueWords.Text);
                 //Write out the number of letters and its result
-                outFile.WriteLine(numOfLettersLabel.Text + " " + 
+                outFile.WriteLine(numOfLettersLabel.Text + " " +
                     numOfLetters.Text);
                 //Write out the average letters per word and its result
                 outFile.WriteLine(avgLettersPerWordLabel.Text + " " +
                     avgLettersPerWord.Text);
-                
+
                 //If the user checked that he wants the list along
                 //with the statistics
-                if ( saveList.Checked )
+                if (saveList.Checked)
                 {
-                    for ( int i = 0; i < outputBox.Items.Count; i++)
+                    for (int i = 0; i < outputBox.Items.Count; i++)
                     {
                         //Write out the contents of the outputBox list
                         //line by line into the file
@@ -317,6 +328,8 @@ namespace Word_Counter
             numOfWords.Text = "";
             numOfUniqueWords.Text = "";
             numOfLetters.Text = "";
+            avgLettersPerWord.Text = "";
+            fileName.Text = "[filename]";
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -332,6 +345,8 @@ namespace Word_Counter
             numOfWords.Text = "";
             numOfUniqueWords.Text = "";
             numOfLetters.Text = "";
+            avgLettersPerWord.Text = "";
+            fileName.Text = "[filename]";
         }
     }
 }

@@ -1,0 +1,8 @@
+Statistics for file: TestText.txt
+Gathered using Word Counter program.
+
+Most common word:  this | 3
+Number of words: 60
+Number of unique words: 48
+Number of letters:  208
+Average letters per word: 3.46666666666667
