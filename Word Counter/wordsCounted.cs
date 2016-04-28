@@ -1,4 +1,6 @@
-﻿namespace Word_Counter
+﻿using System.Text;
+
+namespace Word_Counter
 {
     class wordsCounted
     {
@@ -16,6 +18,8 @@
         //Overwrites the ToString function to return the word, followed
         //by a space, and finally the number
         public override string ToString()
-        { return word + " - Count: " + num.ToString(); }
+        {
+            return word + "   " + getNum();
+        }
     }
 }
