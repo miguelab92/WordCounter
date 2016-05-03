@@ -1,0 +1,7 @@
+Hi this is going to be a long test to ensure that we can find all the words in this file and that the most common word does not happen to be space! Lets try this with questions? And lets also consider exclamations! I should check for LowerCase or UpperCase too! IN THIS CASE THIS IS ALL CAPS! NoW To TrY Som3Th1ng Els3. Also lets try all punctuations. this, is- various=; tests- lets-- see?> how < it ! reads!! ?! 	tabs 	backs
+newlines 
+
+various new lines		
+and 	tabs
+
+Okay this should suffice for basic test.

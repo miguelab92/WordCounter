@@ -15,11 +15,10 @@ namespace Word_Counter
         public int getNum() { return num; }
         //Increments the num variable by one
         public void incrementNum() { ++num; }
-        //Overwrites the ToString function to return the word, followed
-        //by a space, and finally the number
+        //Overwrites the ToString function to return the word and number
         public override string ToString()
         {
-            return word + "   " + getNum();
+            return string.Format("{0, -19} {1,10}", word, getNum()); 
         }
     }
 }
