@@ -57,12 +57,12 @@
             // 
             // outputBox
             // 
-            this.outputBox.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.outputBox.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.outputBox.FormattingEnabled = true;
-            this.outputBox.ItemHeight = 18;
+            this.outputBox.ItemHeight = 14;
             this.outputBox.Location = new System.Drawing.Point(12, 23);
             this.outputBox.Name = "outputBox";
-            this.outputBox.Size = new System.Drawing.Size(238, 184);
+            this.outputBox.Size = new System.Drawing.Size(238, 186);
             this.outputBox.TabIndex = 0;
             // 
             // statsBox

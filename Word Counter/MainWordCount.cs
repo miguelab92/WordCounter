@@ -19,9 +19,10 @@ namespace Word_Counter
         public wordCounter()
         {
             InitializeComponent();
+            //Sets default directory to some sample files
+            Directory.SetCurrentDirectory(@"..\..\SampleFiles\");
         }
-
-
+        
         /// <summary>
         /// Lets user select a file. Also beginning method of processing
         /// </summary>
@@ -33,8 +34,10 @@ namespace Word_Counter
             string filePath;
 
             //Starting path for file dialog
-            oFileDialog.InitialDirectory = @"C:\Users\BermudezM1\Documents
-                \Visual Studio 2015\Projects\WordCounter-master";
+            oFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+
+            //Defaults the file name to warandpace
+            oFileDialog.FileName = "warandpeace.txt";
 
             //If the user selects a file and not cancel
             if (oFileDialog.ShowDialog() == DialogResult.OK)
@@ -70,7 +73,7 @@ namespace Word_Counter
             else
             {
                 //User did not select a file
-                MessageBox.Show("Please select a file.");
+                fileName.Text = "No file selected";
             }
         }
 
@@ -328,6 +331,9 @@ namespace Word_Counter
             //Output file object
             StreamWriter outFile;
 
+            //Defaults save file name to SaveFile.txt
+            sFileDialog.FileName = "SaveFile.txt";
+
             //If user selects file
             if (sFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -377,11 +383,6 @@ namespace Word_Counter
                 }
                 //Close output file
                 outFile.Close();
-            }
-            else
-            {
-                //Error getting file
-                MessageBox.Show("Please pick a file to save to.");
             }
         }
 
@@ -450,8 +451,8 @@ namespace Word_Counter
             {
                 //When we count by letters we must switch some labels
                 mostCommonWordLabel.Text = "Most common letter:";
-                numOfWordsLabel.Text = "Number of letters:";
-                numOfUniqueWordsLabel.Text = "Number of unique letters/symbols:";
+                numOfWordsLabel.Text = "Letters/Symbols:";
+                numOfUniqueWordsLabel.Text = "Unique letters/symbols:";
                 numOfLetters.Visible = false;
                 numOfLettersLabel.Visible = false;
                 avgLettersPerWord.Visible = false;
