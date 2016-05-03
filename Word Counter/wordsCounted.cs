@@ -8,7 +8,7 @@ namespace Word_Counter
         private int num;        //Holds number of times word is seen
 
         //Initializes at 1 for a new word
-        public wordsCounted(string w) { word = w; num = 1; }
+        public wordsCounted( string w = "" ) { word = w; num = 1; }
         //Returns private word variable
         public string getWord() { return word; }
         //Returns private num variable

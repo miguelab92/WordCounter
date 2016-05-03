@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -60,7 +61,7 @@ namespace Word_Counter
                     //Else just word counter
                     StandardRead(filePath);
                 }
-                
+
                 //Update stat box with wordList
                 UpdateStats();
                 //Sets the cursor back to default. Done!
@@ -108,12 +109,13 @@ namespace Word_Counter
         /// Reads words in a file seperated by whitespace
         /// </summary>
         /// <param name="iFile">Not used</param>
-        private void StandardRead(string filePath )
+        private void StandardRead(string filePath)
         {
             //Gets all words from file
-            string allFile = File.ReadAllText(filePath) ;
+            string allFile = File.ReadAllText(filePath);
 
             string[] wordArray = allFile.Split();
+            string tempString;
 
             //Holds the size of array from splitting file
             int sizeOfArray = wordArray.Length;
@@ -121,52 +123,120 @@ namespace Word_Counter
             //for the length of created split array
             for (int i = 0; i < sizeOfArray; i++)
             {
-                //If user wants case sesitivity
-                if (!caseSensitive.Checked)
-                {
-                    //Changes the word to lowercase
-                    wordArray[i] = wordArray[i].ToLower();
-                }
+                //Strips punctuation
+                tempString = StripPunctuation(wordArray[i]);
 
-                //Updates list
-                UpdateList(wordArray[i]);
+                //If not whitespace
+                if (!string.IsNullOrWhiteSpace(tempString))
+                {
+                    //If user wants case sesitivity
+                    if (!caseSensitive.Checked)
+                    {
+                        //Changes the word to lowercase
+                        tempString = tempString.ToLower();
+                    }
+
+                    //Updates list
+                    UpdateList(tempString);
+                }
             }
         }
 
         /// <summary>
-        /// Updates ouput box for user to see the words read
+        /// Strips punctuation off of string passed and returns new string
         /// </summary>
-        /// ******Could be upgraded by adding a sort and upgrading
-        /// this to a binary search ********
-        /// <param name="w">Not used</param>
+        /// <param name="str">String to remove punctuations from</param>
+        /// <returns>Fixed string</returns>
+        private string StripPunctuation(string str)
+        {
+            StringBuilder tempStr = new StringBuilder();
+
+            //For each letter in the word
+            foreach (char c in str)
+            {
+                if (char.IsLetterOrDigit(c))
+                {
+                    //Append letter if not punctuation
+                    tempStr.Append(c);
+                }
+            }
+
+            //Return string
+            return tempStr.ToString();
+        }
+
+        /// <summary>
+        /// Puts the word passed into a sorted list
+        /// </summary>
+        /// <param name="w">Word to be inserted</param>
         private void UpdateList(string w)
         {
-            //If the word has not already been added to list (assumed)
-            bool wordFound = false;
-
             //Holds the number of items in outputBox
-            int count = outputBox.Items.Count;
+            int rightBounds = outputBox.Items.Count - 1;
+            int leftBounds = 0;     //Left bounds starts at 0
+            int middleObj = 0;      //Holds what the middle object is
+            int comparisonResults;  //Holds the results of comparison between strings
+            bool wordFound = false; //Holds whether word was found or not
+            //Holds whether the last operation used was a move towards the right (greater than)
+            bool lastGreaterThan = false;
 
-            //For the amount of items in the list and while we haven't found
-            //the word
-            for (int i = 0; i < count && !wordFound; i++)
+            //If list is empty then we should just add word
+            if (outputBox.Items.Count > 0)
             {
-                //If the word to be update is found
-                if (w == ((wordsCounted)outputBox.Items[i]).getWord() )
+                //While we are still within range and the words hasn't been found
+                while (leftBounds <= rightBounds && !wordFound)
                 {
-                    //Increments object
-                    ((wordsCounted)outputBox.Items[i]).incrementNum();
-                    //Sets found to true
-                    wordFound = true;
+                    //Not the last operation anymore therefore its false
+                    lastGreaterThan = false;
+
+                    //Middle object is the right bounds plus the left bounds (total size)
+                    //divided by 2
+                    middleObj = (rightBounds + leftBounds) / 2;
+
+                    //Get the comparison between the two strings
+                    comparisonResults =
+                        w.CompareTo(((wordsCounted)outputBox.Items[middleObj]).getWord());
+
+                    //If the word to be update is found
+                    if (comparisonResults == 0)
+                    {
+                        //Increments object
+                        ((wordsCounted)outputBox.Items[middleObj]).incrementNum();
+                        //Word has been found
+                        wordFound = true;
+                    }
+                    else if (comparisonResults < 0)
+                    {
+                        //String was smaller alphabetically so we must move right bounds
+                        //towards center - 1
+                        rightBounds = middleObj - 1;
+                    }
+                    else
+                    {
+                        //String was higher alphabetically so we must move right bounds
+                        //towards center + 1
+                        leftBounds = middleObj + 1;
+                        //Last operation was a greater than result
+                        lastGreaterThan = true;
+                    }
                 }
             }
 
             //If not found
             if (!wordFound)
             {
-                //Adds it to list
-                wordsCounted tempWord = new wordsCounted(w);
-                outputBox.Items.Add(tempWord);
+                //If the last operation was a move towards the right (greater than)
+                if (lastGreaterThan)
+                {
+                    //We must most the middle object towards the right for the insert
+                    middleObj++;
+                }
+
+                //Create new object to insert
+                wordsCounted tempObj = new wordsCounted(w);
+
+                //Insert at sorted pos
+                outputBox.Items.Insert(middleObj, tempObj);
             }
         }
 
@@ -200,7 +270,7 @@ namespace Word_Counter
                 getNumOfWords += ((wordsCounted)outputBox.Items[i]).getNum();
 
                 //Add up the length of each word (letters in word)
-                getNumOfLetters += 
+                getNumOfLetters +=
                     (((wordsCounted)outputBox.Items[i]).getWord()).Length;
             }
 
@@ -220,7 +290,7 @@ namespace Word_Counter
                 numOfLetters.Text = getNumOfLetters.ToString();
                 //Gets the number of letters and divides them by number
                 //of words to get average letters
-                avgLettersPerWord.Text = string.Format ( "{0:0.00}" ,
+                avgLettersPerWord.Text = string.Format("{0:0.00}",
                     ((double)getNumOfLetters / getNumOfWords));
 
             }
@@ -232,14 +302,14 @@ namespace Word_Counter
         /// <summary>
         /// Reinputs items into list box to show final updated count
         /// </summary>
-        private void UpdateListBox ()
+        private void UpdateListBox()
         {
             //Gets number of items
             int count = outputBox.Items.Count;
             //Suspends updating outputBox until finished
             outputBox.SuspendLayout();
             //For the number of items
-            for ( int i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 //Reinput item
                 outputBox.Items[i] = outputBox.Items[i];
@@ -381,7 +451,7 @@ namespace Word_Counter
                 //When we count by letters we must switch some labels
                 mostCommonWordLabel.Text = "Most common letter:";
                 numOfWordsLabel.Text = "Number of letters:";
-                numOfUniqueWordsLabel.Text = "Number of unique letters:";
+                numOfUniqueWordsLabel.Text = "Number of unique letters/symbols:";
                 numOfLetters.Visible = false;
                 numOfLettersLabel.Visible = false;
                 avgLettersPerWord.Visible = false;
