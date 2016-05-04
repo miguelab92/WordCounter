@@ -47,7 +47,6 @@
             this.selectFile = new System.Windows.Forms.Button();
             this.saveStatistics = new System.Windows.Forms.Button();
             this.clearFile = new System.Windows.Forms.Button();
-            this.exitButton = new System.Windows.Forms.Button();
             this.oFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.sFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.fileName = new System.Windows.Forms.Label();
@@ -57,16 +56,20 @@
             // 
             // outputBox
             // 
+            this.outputBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.outputBox.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.outputBox.FormattingEnabled = true;
             this.outputBox.ItemHeight = 14;
             this.outputBox.Location = new System.Drawing.Point(12, 23);
             this.outputBox.Name = "outputBox";
-            this.outputBox.Size = new System.Drawing.Size(238, 186);
+            this.outputBox.Size = new System.Drawing.Size(238, 242);
             this.outputBox.TabIndex = 0;
             // 
             // statsBox
             // 
+            this.statsBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.statsBox.Controls.Add(this.avgLettersPerWord);
             this.statsBox.Controls.Add(this.avgLettersPerWordLabel);
             this.statsBox.Controls.Add(this.numOfLetters);
@@ -177,6 +180,7 @@
             // 
             // optionsBox
             // 
+            this.optionsBox.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.optionsBox.Controls.Add(this.caseSensitive);
             this.optionsBox.Controls.Add(this.saveList);
             this.optionsBox.Controls.Add(this.extraChars);
@@ -222,8 +226,9 @@
             // 
             // selectFile
             // 
+            this.selectFile.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.selectFile.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectFile.Location = new System.Drawing.Point(41, 232);
+            this.selectFile.Location = new System.Drawing.Point(396, 232);
             this.selectFile.Name = "selectFile";
             this.selectFile.Size = new System.Drawing.Size(88, 30);
             this.selectFile.TabIndex = 3;
@@ -233,8 +238,9 @@
             // 
             // saveStatistics
             // 
+            this.saveStatistics.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.saveStatistics.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveStatistics.Location = new System.Drawing.Point(295, 232);
+            this.saveStatistics.Location = new System.Drawing.Point(282, 232);
             this.saveStatistics.Name = "saveStatistics";
             this.saveStatistics.Size = new System.Drawing.Size(88, 30);
             this.saveStatistics.TabIndex = 5;
@@ -244,25 +250,16 @@
             // 
             // clearFile
             // 
+            this.clearFile.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.clearFile.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clearFile.Location = new System.Drawing.Point(140, 232);
+            this.clearFile.Location = new System.Drawing.Point(396, 232);
             this.clearFile.Name = "clearFile";
             this.clearFile.Size = new System.Drawing.Size(88, 30);
             this.clearFile.TabIndex = 6;
             this.clearFile.Text = "Clear";
             this.clearFile.UseVisualStyleBackColor = true;
+            this.clearFile.Visible = false;
             this.clearFile.Click += new System.EventHandler(this.clearFile_Click);
-            // 
-            // exitButton
-            // 
-            this.exitButton.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.exitButton.Location = new System.Drawing.Point(394, 232);
-            this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(88, 30);
-            this.exitButton.TabIndex = 7;
-            this.exitButton.Text = "Exit";
-            this.exitButton.UseVisualStyleBackColor = true;
-            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
             // oFileDialog
             // 
@@ -283,13 +280,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(531, 271);
             this.Controls.Add(this.fileName);
-            this.Controls.Add(this.exitButton);
             this.Controls.Add(this.clearFile);
             this.Controls.Add(this.saveStatistics);
             this.Controls.Add(this.selectFile);
             this.Controls.Add(this.optionsBox);
             this.Controls.Add(this.statsBox);
             this.Controls.Add(this.outputBox);
+            this.MaximumSize = new System.Drawing.Size(547, 1080);
+            this.MinimumSize = new System.Drawing.Size(547, 309);
             this.Name = "wordCounter";
             this.Text = "Word Counter";
             this.Load += new System.EventHandler(this.wordCounter_Load);
@@ -310,7 +308,6 @@
         private System.Windows.Forms.Button selectFile;
         private System.Windows.Forms.Button saveStatistics;
         private System.Windows.Forms.Button clearFile;
-        private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.OpenFileDialog oFileDialog;
         private System.Windows.Forms.SaveFileDialog sFileDialog;
         private System.Windows.Forms.CheckBox extraChars;

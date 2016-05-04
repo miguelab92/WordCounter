@@ -67,6 +67,11 @@ namespace Word_Counter
 
                 //Update stat box with wordList
                 UpdateStats();
+
+                //Can't select new file until we clear
+                clearFile.Visible = true;
+                selectFile.Visible = false;
+
                 //Sets the cursor back to default. Done!
                 Cursor.Current = Cursors.Default;
             }
@@ -180,8 +185,6 @@ namespace Word_Counter
             int middleObj = 0;      //Holds what the middle object is
             int comparisonResults;  //Holds the results of comparison between strings
             bool wordFound = false; //Holds whether word was found or not
-            //Holds whether the last operation used was a move towards the right (greater than)
-            bool lastGreaterThan = false;
 
             //If list is empty then we should just add word
             if (outputBox.Items.Count > 0)
@@ -189,8 +192,6 @@ namespace Word_Counter
                 //While we are still within range and the words hasn't been found
                 while (leftBounds <= rightBounds && !wordFound)
                 {
-                    //Not the last operation anymore therefore its false
-                    lastGreaterThan = false;
 
                     //Middle object is the right bounds plus the left bounds (total size)
                     //divided by 2
@@ -201,26 +202,23 @@ namespace Word_Counter
                         w.CompareTo(((wordsCounted)outputBox.Items[middleObj]).getWord());
 
                     //If the word to be update is found
-                    if (comparisonResults == 0)
-                    {
-                        //Increments object
-                        ((wordsCounted)outputBox.Items[middleObj]).incrementNum();
-                        //Word has been found
-                        wordFound = true;
-                    }
-                    else if (comparisonResults < 0)
+                    if (comparisonResults < 0)
                     {
                         //String was smaller alphabetically so we must move right bounds
                         //towards center - 1
                         rightBounds = middleObj - 1;
                     }
-                    else
+                    else if (comparisonResults > 0)
                     {
                         //String was higher alphabetically so we must move right bounds
                         //towards center + 1
-                        leftBounds = middleObj + 1;
-                        //Last operation was a greater than result
-                        lastGreaterThan = true;
+                        leftBounds = ++middleObj;
+                    }
+                    else {
+                        //Increments object
+                        ((wordsCounted)outputBox.Items[middleObj]).incrementNum();
+                        //Word has been found
+                        wordFound = true;
                     }
                 }
             }
@@ -228,13 +226,6 @@ namespace Word_Counter
             //If not found
             if (!wordFound)
             {
-                //If the last operation was a move towards the right (greater than)
-                if (lastGreaterThan)
-                {
-                    //We must most the middle object towards the right for the insert
-                    middleObj++;
-                }
-
                 //Create new object to insert
                 wordsCounted tempObj = new wordsCounted(w);
 
@@ -393,7 +384,12 @@ namespace Word_Counter
         /// <param name="e">Not Used</param>
         private void clearFile_Click(object sender, EventArgs e)
         {
+            //Reset form
             ResetForm();
+
+            //Can't clear file until we select one
+            clearFile.Visible = false;
+            selectFile.Visible = true;
         }
 
         /// <summary>
@@ -411,17 +407,6 @@ namespace Word_Counter
             numOfLetters.Text = "";
             avgLettersPerWord.Text = "";
             fileName.Text = "[filename]";
-        }
-
-        /// <summary>
-        /// Close form
-        /// </summary>
-        /// <param name="sender">Not used</param>
-        /// <param name="e">Not used</param>
-        private void exitButton_Click(object sender, EventArgs e)
-        {
-            //Closes this class
-            this.Close();
         }
 
         /// <summary>
