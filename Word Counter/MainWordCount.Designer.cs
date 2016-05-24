@@ -50,6 +50,9 @@
             this.oFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.sFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.fileName = new System.Windows.Forms.Label();
+            this.sortFreqButton = new System.Windows.Forms.Button();
+            this.longestWordLabel = new System.Windows.Forms.Label();
+            this.longestWordsShow = new System.Windows.Forms.Button();
             this.statsBox.SuspendLayout();
             this.optionsBox.SuspendLayout();
             this.SuspendLayout();
@@ -70,6 +73,8 @@
             // statsBox
             // 
             this.statsBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.statsBox.Controls.Add(this.longestWordsShow);
+            this.statsBox.Controls.Add(this.longestWordLabel);
             this.statsBox.Controls.Add(this.avgLettersPerWord);
             this.statsBox.Controls.Add(this.avgLettersPerWordLabel);
             this.statsBox.Controls.Add(this.numOfLetters);
@@ -83,7 +88,7 @@
             this.statsBox.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statsBox.Location = new System.Drawing.Point(256, 20);
             this.statsBox.Name = "statsBox";
-            this.statsBox.Size = new System.Drawing.Size(262, 100);
+            this.statsBox.Size = new System.Drawing.Size(262, 114);
             this.statsBox.TabIndex = 1;
             this.statsBox.TabStop = false;
             this.statsBox.Text = "Statistics";
@@ -185,9 +190,9 @@
             this.optionsBox.Controls.Add(this.saveList);
             this.optionsBox.Controls.Add(this.extraChars);
             this.optionsBox.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.optionsBox.Location = new System.Drawing.Point(256, 126);
+            this.optionsBox.Location = new System.Drawing.Point(256, 140);
             this.optionsBox.Name = "optionsBox";
-            this.optionsBox.Size = new System.Drawing.Size(262, 100);
+            this.optionsBox.Size = new System.Drawing.Size(262, 89);
             this.optionsBox.TabIndex = 2;
             this.optionsBox.TabStop = false;
             this.optionsBox.Text = "Optional Settings";
@@ -228,7 +233,7 @@
             // 
             this.selectFile.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.selectFile.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectFile.Location = new System.Drawing.Point(396, 232);
+            this.selectFile.Location = new System.Drawing.Point(282, 235);
             this.selectFile.Name = "selectFile";
             this.selectFile.Size = new System.Drawing.Size(88, 30);
             this.selectFile.TabIndex = 3;
@@ -240,7 +245,7 @@
             // 
             this.saveStatistics.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.saveStatistics.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveStatistics.Location = new System.Drawing.Point(282, 232);
+            this.saveStatistics.Location = new System.Drawing.Point(398, 235);
             this.saveStatistics.Name = "saveStatistics";
             this.saveStatistics.Size = new System.Drawing.Size(88, 30);
             this.saveStatistics.TabIndex = 5;
@@ -252,7 +257,7 @@
             // 
             this.clearFile.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.clearFile.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clearFile.Location = new System.Drawing.Point(396, 232);
+            this.clearFile.Location = new System.Drawing.Point(282, 235);
             this.clearFile.Name = "clearFile";
             this.clearFile.Size = new System.Drawing.Size(88, 30);
             this.clearFile.TabIndex = 6;
@@ -274,11 +279,43 @@
             this.fileName.TabIndex = 8;
             this.fileName.Text = "[]";
             // 
+            // sortFreqButton
+            // 
+            this.sortFreqButton.Location = new System.Drawing.Point(231, 2);
+            this.sortFreqButton.Name = "sortFreqButton";
+            this.sortFreqButton.Size = new System.Drawing.Size(20, 20);
+            this.sortFreqButton.TabIndex = 9;
+            this.sortFreqButton.Text = "▼";
+            this.sortFreqButton.UseVisualStyleBackColor = true;
+            this.sortFreqButton.Visible = false;
+            this.sortFreqButton.Click += new System.EventHandler(this.sortFreqButton_Click);
+            // 
+            // longestWordLabel
+            // 
+            this.longestWordLabel.AutoSize = true;
+            this.longestWordLabel.Location = new System.Drawing.Point(6, 89);
+            this.longestWordLabel.Name = "longestWordLabel";
+            this.longestWordLabel.Size = new System.Drawing.Size(84, 14);
+            this.longestWordLabel.TabIndex = 18;
+            this.longestWordLabel.Text = "Longest words:";
+            // 
+            // longestWordsShow
+            // 
+            this.longestWordsShow.Location = new System.Drawing.Point(236, 86);
+            this.longestWordsShow.Name = "longestWordsShow";
+            this.longestWordsShow.Size = new System.Drawing.Size(20, 20);
+            this.longestWordsShow.TabIndex = 10;
+            this.longestWordsShow.Text = "►";
+            this.longestWordsShow.UseVisualStyleBackColor = true;
+            this.longestWordsShow.Visible = false;
+            this.longestWordsShow.Click += new System.EventHandler(this.longestWordsShow_Click);
+            // 
             // wordCounter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(531, 271);
+            this.ClientSize = new System.Drawing.Size(535, 278);
+            this.Controls.Add(this.sortFreqButton);
             this.Controls.Add(this.fileName);
             this.Controls.Add(this.clearFile);
             this.Controls.Add(this.saveStatistics);
@@ -324,6 +361,9 @@
         private System.Windows.Forms.Label avgLettersPerWord;
         private System.Windows.Forms.Label avgLettersPerWordLabel;
         private System.Windows.Forms.Label fileName;
+        private System.Windows.Forms.Button sortFreqButton;
+        private System.Windows.Forms.Label longestWordLabel;
+        private System.Windows.Forms.Button longestWordsShow;
     }
 }
 

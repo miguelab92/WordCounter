@@ -4,21 +4,21 @@ namespace Word_Counter
 {
     class wordsCounted
     {
-        private string word;    //Holds word
-        private int num;        //Holds number of times word is seen
+        private string _word;    //Holds word
+        private int _num;        //Holds number of times word is seen
 
         //Initializes at 1 for a new word
-        public wordsCounted( string w = "" ) { word = w; num = 1; }
+        public wordsCounted( string w = "" ) { _word = w; _num = 1; }
         //Returns private word variable
-        public string getWord() { return word; }
+        public string getWord() { return _word; }
         //Returns private num variable
-        public int getNum() { return num; }
+        public int getNum() { return _num; }
         //Increments the num variable by one
-        public void incrementNum() { ++num; }
+        public void incrementNum() { ++_num; }
         //Overwrites the ToString function to return the word and number
         public override string ToString()
         {
-            return string.Format("{0, -19} {1,10}", word, getNum()); 
+            return string.Format("{0, -19} {1,10}", _word, _num); 
         }
     }
 }
