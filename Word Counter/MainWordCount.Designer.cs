@@ -30,6 +30,8 @@
         {
             this.outputBox = new System.Windows.Forms.ListBox();
             this.statsBox = new System.Windows.Forms.GroupBox();
+            this.longestWordsShow = new System.Windows.Forms.Button();
+            this.longestWordLabel = new System.Windows.Forms.Label();
             this.avgLettersPerWord = new System.Windows.Forms.Label();
             this.avgLettersPerWordLabel = new System.Windows.Forms.Label();
             this.numOfLetters = new System.Windows.Forms.Label();
@@ -51,8 +53,8 @@
             this.sFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.fileName = new System.Windows.Forms.Label();
             this.sortFreqButton = new System.Windows.Forms.Button();
-            this.longestWordLabel = new System.Windows.Forms.Label();
-            this.longestWordsShow = new System.Windows.Forms.Button();
+            this.searchBox = new System.Windows.Forms.TextBox();
+            this.searchLabel = new System.Windows.Forms.Label();
             this.statsBox.SuspendLayout();
             this.optionsBox.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +69,7 @@
             this.outputBox.ItemHeight = 14;
             this.outputBox.Location = new System.Drawing.Point(12, 23);
             this.outputBox.Name = "outputBox";
-            this.outputBox.Size = new System.Drawing.Size(238, 242);
+            this.outputBox.Size = new System.Drawing.Size(238, 200);
             this.outputBox.TabIndex = 0;
             // 
             // statsBox
@@ -92,6 +94,26 @@
             this.statsBox.TabIndex = 1;
             this.statsBox.TabStop = false;
             this.statsBox.Text = "Statistics";
+            // 
+            // longestWordsShow
+            // 
+            this.longestWordsShow.Location = new System.Drawing.Point(241, 89);
+            this.longestWordsShow.Name = "longestWordsShow";
+            this.longestWordsShow.Size = new System.Drawing.Size(15, 15);
+            this.longestWordsShow.TabIndex = 10;
+            this.longestWordsShow.Text = "╜";
+            this.longestWordsShow.UseVisualStyleBackColor = true;
+            this.longestWordsShow.Visible = false;
+            this.longestWordsShow.Click += new System.EventHandler(this.longestWordsShow_Click);
+            // 
+            // longestWordLabel
+            // 
+            this.longestWordLabel.AutoSize = true;
+            this.longestWordLabel.Location = new System.Drawing.Point(6, 89);
+            this.longestWordLabel.Name = "longestWordLabel";
+            this.longestWordLabel.Size = new System.Drawing.Size(92, 14);
+            this.longestWordLabel.TabIndex = 18;
+            this.longestWordLabel.Text = "Longest word(s):";
             // 
             // avgLettersPerWord
             // 
@@ -213,9 +235,9 @@
             this.saveList.AutoSize = true;
             this.saveList.Location = new System.Drawing.Point(6, 65);
             this.saveList.Name = "saveList";
-            this.saveList.Size = new System.Drawing.Size(118, 18);
+            this.saveList.Size = new System.Drawing.Size(156, 18);
             this.saveList.TabIndex = 1;
-            this.saveList.Text = "Save list with stats";
+            this.saveList.Text = "Save current list with stats";
             this.saveList.UseVisualStyleBackColor = true;
             // 
             // extraChars
@@ -281,40 +303,40 @@
             // 
             // sortFreqButton
             // 
-            this.sortFreqButton.Location = new System.Drawing.Point(231, 2);
+            this.sortFreqButton.Location = new System.Drawing.Point(225, 2);
             this.sortFreqButton.Name = "sortFreqButton";
-            this.sortFreqButton.Size = new System.Drawing.Size(20, 20);
+            this.sortFreqButton.Size = new System.Drawing.Size(25, 20);
             this.sortFreqButton.TabIndex = 9;
             this.sortFreqButton.Text = "▼";
             this.sortFreqButton.UseVisualStyleBackColor = true;
             this.sortFreqButton.Visible = false;
             this.sortFreqButton.Click += new System.EventHandler(this.sortFreqButton_Click);
             // 
-            // longestWordLabel
+            // searchBox
             // 
-            this.longestWordLabel.AutoSize = true;
-            this.longestWordLabel.Location = new System.Drawing.Point(6, 89);
-            this.longestWordLabel.Name = "longestWordLabel";
-            this.longestWordLabel.Size = new System.Drawing.Size(84, 14);
-            this.longestWordLabel.TabIndex = 18;
-            this.longestWordLabel.Text = "Longest words:";
+            this.searchBox.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchBox.Location = new System.Drawing.Point(12, 241);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(238, 20);
+            this.searchBox.TabIndex = 10;
+            this.searchBox.TextChanged += new System.EventHandler(this.searchBox_TextChanged);
             // 
-            // longestWordsShow
+            // searchLabel
             // 
-            this.longestWordsShow.Location = new System.Drawing.Point(236, 86);
-            this.longestWordsShow.Name = "longestWordsShow";
-            this.longestWordsShow.Size = new System.Drawing.Size(20, 20);
-            this.longestWordsShow.TabIndex = 10;
-            this.longestWordsShow.Text = "►";
-            this.longestWordsShow.UseVisualStyleBackColor = true;
-            this.longestWordsShow.Visible = false;
-            this.longestWordsShow.Click += new System.EventHandler(this.longestWordsShow_Click);
+            this.searchLabel.AutoSize = true;
+            this.searchLabel.Location = new System.Drawing.Point(9, 226);
+            this.searchLabel.Name = "searchLabel";
+            this.searchLabel.Size = new System.Drawing.Size(44, 13);
+            this.searchLabel.TabIndex = 19;
+            this.searchLabel.Text = "Search:";
             // 
             // wordCounter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(535, 278);
+            this.Controls.Add(this.searchLabel);
+            this.Controls.Add(this.searchBox);
             this.Controls.Add(this.sortFreqButton);
             this.Controls.Add(this.fileName);
             this.Controls.Add(this.clearFile);
@@ -364,6 +386,8 @@
         private System.Windows.Forms.Button sortFreqButton;
         private System.Windows.Forms.Label longestWordLabel;
         private System.Windows.Forms.Button longestWordsShow;
+        private System.Windows.Forms.TextBox searchBox;
+        private System.Windows.Forms.Label searchLabel;
     }
 }
 

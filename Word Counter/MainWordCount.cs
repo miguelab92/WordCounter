@@ -1,6 +1,6 @@
 ﻿// @brief Read a file and output the number of times each word appears
 // @author Miguel Bermudez
-// @version 2016-05-23
+// @version 2016-05-26
 
 using System;
 using System.IO;
@@ -13,7 +13,9 @@ namespace Word_Counter
     public partial class wordCounter : Form
     {
         //List used behind the scenes
-        private List<wordsCounted> backList;
+        private List<WordsCounted> backList;
+        private readonly string FREQ_SYMBOL = "▼";
+        private readonly string FREQ_SYMBOL_ALT = "Θ" ;
 
         /// <summary>
         /// Initializes form
@@ -241,7 +243,7 @@ namespace Word_Counter
             if (!wordFound)
             {
                 //Create new object to insert
-                wordsCounted tempObj = new wordsCounted(w);
+                WordsCounted tempObj = new WordsCounted(w);
 
                 //Insert at sorted position
                 backList.Insert(middleObj, tempObj);
@@ -308,15 +310,22 @@ namespace Word_Counter
         /// <summary>
         /// Updates output box with final list
         /// </summary>
-        private void UpdateListBox()
+        private void UpdateListBox(int leftBounds = 0, int rightBounds = -1) 
         {
-            //Gets number of items
-            int count = backList.Count;
+            outputBox.Items.Clear();
+
+            //If rightBounds is left to default then we make it the entire list
+            if (rightBounds < leftBounds)
+            {
+                //Gets number of items
+                rightBounds = backList.Count;
+            }
+
             //Suspends updating outputBox until finished
             outputBox.SuspendLayout();
 
             //For the number of items
-            for (int i = 0; i < count; ++i)
+            for (int i = leftBounds; i < rightBounds; ++i)
             {
                 //Input item
                 outputBox.Items.Add(backList[i]);
@@ -383,7 +392,7 @@ namespace Word_Counter
                     {
                         //Write out the contents of the outputBox list
                         //line by line into the file
-                        outFile.WriteLine(((wordsCounted)outputBox.Items[i]).ToString());
+                        outFile.WriteLine(((WordsCounted)outputBox.Items[i]).ToString());
                     }
                 }
                 //Close output file
@@ -410,7 +419,7 @@ namespace Word_Counter
             //Resets the list by calling Clear function
             outputBox.Items.Clear();
             //Create new list for the background list
-            backList = new List<wordsCounted>();
+            backList = new List<WordsCounted>();
 
             //Resets all the labels
             mostCommonWord.Text = "";
@@ -549,19 +558,25 @@ namespace Word_Counter
             Cursor.Current = Cursors.WaitCursor;
 
             //If the button indicated sort by frequency
-            if (sortFreqButton.Text == "▼")
+            if (sortFreqButton.Text == FREQ_SYMBOL )
             {
+                //Disable the search bar
+                searchBox.Text = "Disabled while displaying by Frequency";
+                searchBox.Enabled = false;
                 //We sort by frequency
                 SortByFrequency();
                 //Change the button for the user to sort back
-                sortFreqButton.Text = "Θ";
+                sortFreqButton.Text = FREQ_SYMBOL_ALT;
             }
             else
             {
+                //Enable the search bar
+                searchBox.Text = "";
+                searchBox.Enabled = true;
                 //We do the regular sort again
                 UpdateListBox();
                 //Change the button back
-                sortFreqButton.Text = "▼";
+                sortFreqButton.Text = FREQ_SYMBOL;
             }
 
             //Return to regular cursor
@@ -618,6 +633,89 @@ namespace Word_Counter
             Cursor.Current = Cursors.Default;
 
             MessageBox.Show(tempString.ToString());
+        }
+
+        /// <summary>
+        /// Binary search of the backList list for a target
+        /// </summary>
+        /// <param name="target">Word to search</param>
+        /// <param name="lBounds">Left limit</param>
+        /// <param name="rBounds">Right Limit</param>
+        /// <returns>Index of where word is (or should be)</returns>
+        private int GetIndex ( string target, int lBounds = 0, int rBounds = -1 )
+        {
+            int rightBounds;              //Will hold either the full list of rBounds
+            int leftBounds = lBounds;     //Left bounds starts at 0
+            int middleObj = 0;      //Holds what the middle object is
+            int comparisonResults;  //Holds the results of comparison between strings
+            bool wordFound = false; //Holds whether word was found or not
+
+            //If the number wasn't smaller on the right (or default)
+            if (rBounds < lBounds)
+            {
+                //Holds the number of items in outputBox
+                rightBounds = backList.Count - 1;
+            }
+            else
+            {
+                //Else we use parameter given
+                rightBounds = rBounds;
+            }
+
+            //While right bounds is still larger and the word hasn't been found
+            while (leftBounds <= rightBounds && !wordFound)
+            {
+
+                //Middle object is the right bounds plus the left bounds (total size)
+                //divided by 2
+                middleObj = (rightBounds + leftBounds) / 2;
+
+                //Get the comparison between the two strings
+                comparisonResults =
+                    target.CompareTo(backList[middleObj].getWord());
+
+                //If the word to be update is found
+                if (comparisonResults < 0)
+                {
+                    //String was smaller alphabetically so we must move right bounds
+                    //towards center - 1
+                    rightBounds = middleObj - 1;
+                }
+                else if (comparisonResults > 0)
+                {
+                    //String was higher alphabetically so we must move right bounds
+                    //towards center + 1
+                    leftBounds = ++middleObj;
+                }
+                else
+                {
+                    //Increments object
+                    backList[middleObj].incrementNum();
+                    //Word has been found
+                    wordFound = true;
+                }
+            }
+
+            //Return where the middle object is pointing
+            return middleObj;
+        }
+
+        /// <summary>
+        /// Allows user to search dynamically
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
+        private void searchBox_TextChanged(object sender, EventArgs e)
+        {
+            //Get the first index of the word that is being searched for
+            int searchLeft = GetIndex(searchBox.Text);
+            //Get the last index of the word that is being serached for
+            //Note: Use zz to simulate a large next word that is 
+            //(unlikely) to exists
+            int searchRight = GetIndex(searchBox.Text + "zz");
+
+            //Update the outputBox with the new values
+            UpdateListBox(searchLeft, searchRight);
         }
     }
 }
