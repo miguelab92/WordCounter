@@ -45,7 +45,7 @@
             this.optionsBox = new System.Windows.Forms.GroupBox();
             this.caseSensitive = new System.Windows.Forms.CheckBox();
             this.saveList = new System.Windows.Forms.CheckBox();
-            this.extraChars = new System.Windows.Forms.CheckBox();
+            this.characterCount = new System.Windows.Forms.CheckBox();
             this.selectFile = new System.Windows.Forms.Button();
             this.saveStatistics = new System.Windows.Forms.Button();
             this.clearFile = new System.Windows.Forms.Button();
@@ -67,7 +67,7 @@
             this.outputBox.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.outputBox.FormattingEnabled = true;
             this.outputBox.ItemHeight = 14;
-            this.outputBox.Location = new System.Drawing.Point(12, 23);
+            this.outputBox.Location = new System.Drawing.Point(9, 23);
             this.outputBox.Name = "outputBox";
             this.outputBox.Size = new System.Drawing.Size(238, 200);
             this.outputBox.TabIndex = 0;
@@ -88,9 +88,9 @@
             this.statsBox.Controls.Add(this.numOfWordsLabel);
             this.statsBox.Controls.Add(this.mostCommonWordLabel);
             this.statsBox.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statsBox.Location = new System.Drawing.Point(256, 20);
+            this.statsBox.Location = new System.Drawing.Point(261, 17);
             this.statsBox.Name = "statsBox";
-            this.statsBox.Size = new System.Drawing.Size(262, 114);
+            this.statsBox.Size = new System.Drawing.Size(262, 115);
             this.statsBox.TabIndex = 1;
             this.statsBox.TabStop = false;
             this.statsBox.Text = "Statistics";
@@ -210,9 +210,9 @@
             this.optionsBox.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.optionsBox.Controls.Add(this.caseSensitive);
             this.optionsBox.Controls.Add(this.saveList);
-            this.optionsBox.Controls.Add(this.extraChars);
+            this.optionsBox.Controls.Add(this.characterCount);
             this.optionsBox.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.optionsBox.Location = new System.Drawing.Point(256, 140);
+            this.optionsBox.Location = new System.Drawing.Point(261, 136);
             this.optionsBox.Name = "optionsBox";
             this.optionsBox.Size = new System.Drawing.Size(262, 89);
             this.optionsBox.TabIndex = 2;
@@ -240,22 +240,22 @@
             this.saveList.Text = "Save current list with stats";
             this.saveList.UseVisualStyleBackColor = true;
             // 
-            // extraChars
+            // characterCount
             // 
-            this.extraChars.AutoSize = true;
-            this.extraChars.Location = new System.Drawing.Point(6, 19);
-            this.extraChars.Name = "extraChars";
-            this.extraChars.Size = new System.Drawing.Size(180, 18);
-            this.extraChars.TabIndex = 0;
-            this.extraChars.Text = "Count by character (not words)";
-            this.extraChars.UseVisualStyleBackColor = true;
-            this.extraChars.CheckedChanged += new System.EventHandler(this.extraChars_CheckedChanged);
+            this.characterCount.AutoSize = true;
+            this.characterCount.Location = new System.Drawing.Point(6, 19);
+            this.characterCount.Name = "characterCount";
+            this.characterCount.Size = new System.Drawing.Size(180, 18);
+            this.characterCount.TabIndex = 0;
+            this.characterCount.Text = "Count by character (not words)";
+            this.characterCount.UseVisualStyleBackColor = true;
+            this.characterCount.CheckedChanged += new System.EventHandler(this.extraChars_CheckedChanged);
             // 
             // selectFile
             // 
             this.selectFile.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.selectFile.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectFile.Location = new System.Drawing.Point(282, 235);
+            this.selectFile.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectFile.Location = new System.Drawing.Point(347, 231);
             this.selectFile.Name = "selectFile";
             this.selectFile.Size = new System.Drawing.Size(88, 30);
             this.selectFile.TabIndex = 3;
@@ -266,8 +266,8 @@
             // saveStatistics
             // 
             this.saveStatistics.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.saveStatistics.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveStatistics.Location = new System.Drawing.Point(398, 235);
+            this.saveStatistics.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveStatistics.Location = new System.Drawing.Point(287, 231);
             this.saveStatistics.Name = "saveStatistics";
             this.saveStatistics.Size = new System.Drawing.Size(88, 30);
             this.saveStatistics.TabIndex = 5;
@@ -278,8 +278,8 @@
             // clearFile
             // 
             this.clearFile.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.clearFile.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clearFile.Location = new System.Drawing.Point(282, 235);
+            this.clearFile.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.clearFile.Location = new System.Drawing.Point(411, 231);
             this.clearFile.Name = "clearFile";
             this.clearFile.Size = new System.Drawing.Size(88, 30);
             this.clearFile.TabIndex = 6;
@@ -295,7 +295,7 @@
             // fileName
             // 
             this.fileName.AutoSize = true;
-            this.fileName.Location = new System.Drawing.Point(12, 9);
+            this.fileName.Location = new System.Drawing.Point(9, 9);
             this.fileName.Name = "fileName";
             this.fileName.Size = new System.Drawing.Size(13, 13);
             this.fileName.TabIndex = 8;
@@ -303,9 +303,10 @@
             // 
             // sortFreqButton
             // 
-            this.sortFreqButton.Location = new System.Drawing.Point(225, 2);
+            this.sortFreqButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sortFreqButton.Location = new System.Drawing.Point(209, 7);
             this.sortFreqButton.Name = "sortFreqButton";
-            this.sortFreqButton.Size = new System.Drawing.Size(25, 20);
+            this.sortFreqButton.Size = new System.Drawing.Size(20, 15);
             this.sortFreqButton.TabIndex = 9;
             this.sortFreqButton.Text = "▼";
             this.sortFreqButton.UseVisualStyleBackColor = true;
@@ -314,8 +315,9 @@
             // 
             // searchBox
             // 
+            this.searchBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.searchBox.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchBox.Location = new System.Drawing.Point(12, 241);
+            this.searchBox.Location = new System.Drawing.Point(9, 241);
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(238, 20);
             this.searchBox.TabIndex = 10;
@@ -323,10 +325,12 @@
             // 
             // searchLabel
             // 
+            this.searchLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.searchLabel.AutoSize = true;
-            this.searchLabel.Location = new System.Drawing.Point(9, 226);
+            this.searchLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchLabel.Location = new System.Drawing.Point(9, 229);
             this.searchLabel.Name = "searchLabel";
-            this.searchLabel.Size = new System.Drawing.Size(44, 13);
+            this.searchLabel.Size = new System.Drawing.Size(37, 12);
             this.searchLabel.TabIndex = 19;
             this.searchLabel.Text = "Search:";
             // 
@@ -334,19 +338,19 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(535, 278);
+            this.ClientSize = new System.Drawing.Size(535, 269);
             this.Controls.Add(this.searchLabel);
             this.Controls.Add(this.searchBox);
             this.Controls.Add(this.sortFreqButton);
+            this.Controls.Add(this.saveStatistics);
             this.Controls.Add(this.fileName);
             this.Controls.Add(this.clearFile);
-            this.Controls.Add(this.saveStatistics);
             this.Controls.Add(this.selectFile);
             this.Controls.Add(this.optionsBox);
             this.Controls.Add(this.statsBox);
             this.Controls.Add(this.outputBox);
             this.MaximumSize = new System.Drawing.Size(547, 1080);
-            this.MinimumSize = new System.Drawing.Size(547, 309);
+            this.MinimumSize = new System.Drawing.Size(547, 300);
             this.Name = "wordCounter";
             this.Text = "Word Counter";
             this.Load += new System.EventHandler(this.wordCounter_Load);
@@ -369,7 +373,7 @@
         private System.Windows.Forms.Button clearFile;
         private System.Windows.Forms.OpenFileDialog oFileDialog;
         private System.Windows.Forms.SaveFileDialog sFileDialog;
-        private System.Windows.Forms.CheckBox extraChars;
+        private System.Windows.Forms.CheckBox characterCount;
         private System.Windows.Forms.Label numOfUniqueWords;
         private System.Windows.Forms.Label numOfUniqueWordsLabel;
         private System.Windows.Forms.Label numOfWords;

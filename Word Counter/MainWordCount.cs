@@ -30,63 +30,73 @@ namespace Word_Counter
         }
 
         /// <summary>
-        /// Lets user select a file. Also beginning method of processing
+        /// Lets user select a file.
         /// </summary>
         /// <param name="sender">Not used</param>
         /// <param name="e">Not used</param>
         private void selectFile_Click(object sender, EventArgs e)
         {
-            //Path to file
-            string filePath;
+            string filePath;    //Holds path to file user will select
 
-            //Starting path for file dialog
+            //Sets the dialog box to display the default directory first
+            //This was declared in the wordCounter constructor
             oFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
 
-            //Defaults the file name to warandpace
-            oFileDialog.FileName = "warandpeace.txt";
-
-            //If the user selects a file and not cancel
+            //If the user selects a file
             if (oFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //Shows that the program is running
+                //Change the cursor to a wait icon
                 Cursor.Current = Cursors.WaitCursor;
 
                 //Sets the label above the outputBox to the name of file by
-                //first taking the whole name, then splitting it by the \
-                //and taking the string after the last \ (the file name)
+                //splitting the file path by \ and taking the last part of
+                //the result
                 string[] fileNameArray = oFileDialog.FileName.Split('\\');
                 fileName.Text = fileNameArray[fileNameArray.Length - 1];
 
-                //Gets filename path
+                //Gets the path for the file
                 filePath = oFileDialog.FileName;
 
-                //The user wants character counter
-                if (extraChars.Checked)
+                //If the user has checked they want to count by characters
+                if (characterCount.Checked)
                 {
                     CharRead(filePath);
                 }
                 else
                 {
-                    //Else just word counter
+                    //If not we read by words
                     StandardRead(filePath);
                 }
 
-                //Update stat box with the filled list
+                //Update statistics
                 UpdateStats();
 
-                //Can't select new file until we clear
+                //Enable clearing the form
                 clearFile.Visible = true;
+                //Enable saving file
+                saveStatistics.Visible = true;
+                //Disable selecting a new file
                 selectFile.Visible = false;
 
                 //Sort by frequency button is now visible
                 sortFreqButton.Visible = true;
 
-                //If we are not checking by char
-                if (!extraChars.Checked)
+                //If we are not counting characters
+                if (!characterCount.Checked)
                 {
                     //Show longest word is now visible
                     longestWordsShow.Visible = true;
                 }
+
+                //Enable searching
+                //NOTE: Changing the text updates the outputBox
+                //Line commented out as it is unnecessary 
+                //(and slows down results)
+
+                /*UpdateListBox();*/
+                searchBox.Text = "";
+                searchBox.Enabled = true;
+
                 //Sets the cursor back to default. Done!
                 Cursor.Current = Cursors.Default;
             }
@@ -98,64 +108,64 @@ namespace Word_Counter
         }
 
         /// <summary>
-        /// Counts characters that appear in file
+        /// Reads the file by character
         /// </summary>
         /// <param name="iFile">input file</param>
         private void CharRead(string iFile)
         {
             //Open the text selected into the StreamReader
             StreamReader inputFile = File.OpenText(oFileDialog.FileName);
-            //Character read
-            char tempChar;
+            char tempChar;  //Holds the characters as they are read
 
-            //While we are still reading
+            //While there is still more to read
             while (!inputFile.EndOfStream)
             {
-                //Read a char
+                //Read the next character
                 tempChar = (char)inputFile.Read();
 
+                //If the user doesn't want case sensitive results
                 if (!caseSensitive.Checked)
                 {
-                    //If the user wants case sensitive results
+                    //Turn all characters into lowercase
                     tempChar = char.ToLower(tempChar);
                 }
 
+                //If the character isn't a whitespace character
                 if (!char.IsWhiteSpace(tempChar))
                 {
-                    //Updates list
+                    //Updates list with read character
                     UpdateList(tempChar.ToString());
                 }
             }
         }
 
         /// <summary>
-        /// Reads words in a file seperated by whitespace
+        /// Reads words in a file
         /// </summary>
         /// <param name="iFile">Not used</param>
         private void StandardRead(string filePath)
         {
+            string tempString;  //Holds each word read
+
             //Gets all words from file
             string allFile = File.ReadAllText(filePath);
 
+            //Split all the words by whitespace
             string[] wordArray = allFile.Split();
-            string tempString;
 
-            //Holds the size of array from splitting file
-            int sizeOfArray = wordArray.Length;
-
-            //for the length of created split array
-            for (int i = 0; i < sizeOfArray; i++)
+            //for the length of created array of words
+            for (int i = 0; i < wordArray.Length; i++)
             {
                 //Strips punctuation
                 tempString = StripPunctuation(wordArray[i]);
 
-                //If not whitespace
+                //If word is not whitespace
                 if (!string.IsNullOrWhiteSpace(tempString))
                 {
-                    //If user wants case sesitivity
+                    //If user doesn't care about case
                     if (!caseSensitive.Checked)
                     {
-                        //Changes the word to lowercase
+                        //Change the word to lowercase
                         tempString = tempString.ToLower();
                     }
 
@@ -168,7 +178,7 @@ namespace Word_Counter
         /// <summary>
         /// Strips punctuation off of string passed and returns new string
         /// </summary>
-        /// <param name="str">String to remove punctuations from</param>
+        /// <param name="str">String to affect</param>
         /// <returns>Fixed string</returns>
         private string StripPunctuation(string str)
         {
@@ -189,64 +199,31 @@ namespace Word_Counter
         }
 
         /// <summary>
-        /// Puts the word passed into a sorted list
+        /// Inserts the word passed into list
         /// </summary>
         /// <param name="w">Word to be inserted</param>
         private void UpdateList(string w)
         {
-            //Holds the number of items in outputBox
-            int rightBounds = backList.Count - 1;
-            int leftBounds = 0;     //Left bounds starts at 0
-            int middleObj = 0;      //Holds what the middle object is
-            int comparisonResults;  //Holds the results of comparison between strings
+            int index = 0;
             bool wordFound = false; //Holds whether word was found or not
 
-            //If list is empty then we should just add word
+            //Check that list has at least one item
             if (backList.Count > 0)
             {
-                //While we are still within range and the words hasn't been found
-                while (leftBounds <= rightBounds && !wordFound)
-                {
-
-                    //Middle object is the right bounds plus the left bounds (total size)
-                    //divided by 2
-                    middleObj = (rightBounds + leftBounds) / 2;
-
-                    //Get the comparison between the two strings
-                    comparisonResults =
-                        w.CompareTo(backList[middleObj].getWord());
-
-                    //If the word to be update is found
-                    if (comparisonResults < 0)
-                    {
-                        //String was smaller alphabetically so we must move right bounds
-                        //towards center - 1
-                        rightBounds = middleObj - 1;
-                    }
-                    else if (comparisonResults > 0)
-                    {
-                        //String was higher alphabetically so we must move right bounds
-                        //towards center + 1
-                        leftBounds = ++middleObj;
-                    }
-                    else
-                    {
-                        //Increments object
-                        backList[middleObj].incrementNum();
-                        //Word has been found
-                        wordFound = true;
-                    }
-                }
+                //Get whether word is in list and where it is (or should be)
+                index = GetIndex(w, ref wordFound);
             }
 
-            //If not found
+            //If not found we must add it at index
             if (!wordFound)
             {
-                //Create new object to insert
-                WordsCounted tempObj = new WordsCounted(w);
-
-                //Insert at sorted position
-                backList.Insert(middleObj, tempObj);
+                //Insert a new object at sorted position
+                backList.Insert(index, new WordsCounted(w));
+            }
+            else
+            {
+                //If found we must increment count
+                backList[index].incrementNum();
             }
         }
 
@@ -255,22 +232,21 @@ namespace Word_Counter
         /// </summary>
         private void UpdateStats()
         {
-            string getCommonWord = "None found";    //Starts with not found
+            string getCommonWord = "None found";    //Defaults to not found
             int numOfCommonWord = 0;    //Holds number of times word is found
-            int getNumOfWords = 0;      //Number of words total
-            int getNumOfLetters = 0;    //Number of letters total
+            int getNumOfWords = 0;      //Number of total words
+            int getNumOfLetters = 0;    //Number of total letters
 
-            //For the amount of items on the list
+            //Go through all the words
             for (int i = 0, sizeOfList = backList.Count; i < sizeOfList; i++)
             {
-
-                //If the object has a higher count than current highest count
+                //If the current object has a higher count than current highest count
                 if (backList[i].getNum() > numOfCommonWord &&
                     backList[i].getWord() != "")
                 {
                     //It is our new most common word
                     getCommonWord = (backList[i]).getWord();
-                    //And updates the count
+                    //Updates the highest word
                     numOfCommonWord = backList[i].getNum();
                 }
 
@@ -283,16 +259,16 @@ namespace Word_Counter
             }
 
             //Outputs results to labels
-            //Outputs common word and its count
+            //Shows most common word and its count
             mostCommonWord.Text = getCommonWord + " | " +
                 numOfCommonWord.ToString();
-            //Outputs number of words
+            //Shows total number of words
             numOfWords.Text = getNumOfWords.ToString();
             //Size of list is the number of unique words
             numOfUniqueWords.Text = backList.Count.ToString();
 
-            //Only applies if we are doing by words
-            if (!extraChars.Checked)
+            //Won't get letters if we are not counting by words
+            if (!characterCount.Checked)
             {
                 //Outputs number of letters
                 numOfLetters.Text = getNumOfLetters.ToString();
@@ -302,32 +278,32 @@ namespace Word_Counter
                     ((double)getNumOfLetters / getNumOfWords));
 
             }
-
-            //Update the listBox to show final counts for items
-            UpdateListBox();
         }
 
         /// <summary>
-        /// Updates output box with final list
+        /// Updates the outputBox using data from list
         /// </summary>
+        /// <param name="leftBounds">Starting left index</param>
+        /// <param name="rightBounds">Ending right index</param>
         private void UpdateListBox(int leftBounds = 0, int rightBounds = -1) 
         {
+            //Clear the list before working with it
             outputBox.Items.Clear();
 
             //If rightBounds is left to default then we make it the entire list
             if (rightBounds < leftBounds)
             {
-                //Gets number of items
+                //Gets total number of items
                 rightBounds = backList.Count;
             }
 
             //Suspends updating outputBox until finished
             outputBox.SuspendLayout();
 
-            //For the number of items
+            //From the left bounds to the right bounds
             for (int i = leftBounds; i < rightBounds; ++i)
             {
-                //Input item
+                //Add item to outputBox
                 outputBox.Items.Add(backList[i]);
             }
 
@@ -345,9 +321,6 @@ namespace Word_Counter
             //Output file object
             StreamWriter outFile;
 
-            //Defaults save file name to SaveFile.txt
-            sFileDialog.FileName = "SaveFile.txt";
-
             //If user selects file
             if (sFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -355,12 +328,11 @@ namespace Word_Counter
                 outFile = File.CreateText(sFileDialog.FileName);
 
                 //Top of file. Shows file name and a bit of credits
-                outFile.WriteLine("Statistics for file: " + fileName.Text);
+                outFile.WriteLine("Statistics for file : " + fileName.Text);
                 outFile.WriteLine("Gathered using Word Counter program.");
                 outFile.WriteLine("\n");
 
-                //Write out the label for most common word and its
-                //value
+                //Write out the label for most common word and its value
                 outFile.WriteLine(mostCommonWordLabel.Text + " " +
                     mostCommonWord.Text);
                 //Write out the number of words in file and its result
@@ -370,8 +342,8 @@ namespace Word_Counter
                 outFile.WriteLine(numOfUniqueWordsLabel.Text + " " +
                     numOfUniqueWords.Text);
 
-                //Only appliest if we regular word search not char search
-                if (!extraChars.Checked)
+                //If we are searching by words not characters
+                if (!characterCount.Checked)
                 {
                     //Write out the number of letters and its result
                     outFile.WriteLine(numOfLettersLabel.Text + " " +
@@ -382,12 +354,35 @@ namespace Word_Counter
                 }
 
                 //Space out lines
-                outFile.WriteLine("\n");
+                outFile.WriteLine("");
 
                 //If the user checked that he wants the list along
                 //with the statistics
                 if (saveList.Checked)
                 {
+                    //If the searchBox isn't empty
+                    if (searchBox.Text != "")
+                    {
+                        //If list is not being sorted by frequency
+                        if (sortFreqButton.Text != FREQ_SYMBOL_ALT)
+                        {
+                            //Our list is filtered by a search
+                            outFile.WriteLine("List of only words starting with: "
+                                + searchBox.Text);
+                        }
+                        else
+                        {
+                            //Else we are sorting by frequency
+                            outFile.WriteLine("List sort by frequency");
+                        }
+                    } else
+                    {
+                        outFile.WriteLine("List sorted alphabetically");
+                    }
+
+                    //Extra blank line
+                    outFile.WriteLine("");
+
                     for (int i = 0, count = outputBox.Items.Count; i < count; i++)
                     {
                         //Write out the contents of the outputBox list
@@ -395,6 +390,7 @@ namespace Word_Counter
                         outFile.WriteLine(((WordsCounted)outputBox.Items[i]).ToString());
                     }
                 }
+
                 //Close output file
                 outFile.Close();
             }
@@ -432,6 +428,11 @@ namespace Word_Counter
             longestWordsShow.Visible = false;
             clearFile.Visible = false;
             selectFile.Visible = true;
+            saveStatistics.Visible = false;
+
+            //Disable searchBox
+            searchBox.Text = "Select a file before searching";
+            searchBox.Enabled = false;
         }
 
         /// <summary>
@@ -457,7 +458,7 @@ namespace Word_Counter
         /// <param name="e">Not used</param>
         private void extraChars_CheckedChanged(object sender, EventArgs e)
         {
-            if (extraChars.Checked)
+            if (characterCount.Checked)
             {
                 //When we count by letters we must switch some labels
                 mostCommonWordLabel.Text = "Most common letter:";
@@ -469,7 +470,7 @@ namespace Word_Counter
                 avgLettersPerWordLabel.Visible = false;
                 longestWordLabel.Visible = false;
 
-                //Resets starts as parameters have changed
+                //Resets form as major parameters have changed
                 ResetForm();
             }
             else
@@ -484,7 +485,7 @@ namespace Word_Counter
                 avgLettersPerWordLabel.Visible = true;
                 longestWordLabel.Visible = true;
 
-                //Resets starts as parameters have changed
+                //Resets form as major parameters have changed
                 ResetForm();
             }
         }
@@ -504,31 +505,29 @@ namespace Word_Counter
         /// </summary>
         private void SortByFrequency()
         {
-            //Get the count once to not have to recalculate
-            int lengthOfList = backList.Count;
             //Parallel array of bools
-            bool[] usedWords = new bool[lengthOfList];
+            bool[] usedWords = new bool[backList.Count];
             int largestNum;     //Current largest num
             int curLargestIndex;//Index of largest num
 
-            //Initialize to all false
-            for (int i = 0; i < lengthOfList; ++i)
+            //Initialize all to false
+            for (int i = 0; i < backList.Count; ++i)
             {
                 usedWords[i] = false;
             }
 
             //For the amount of items in the list
-            for (int i = 0; i < lengthOfList; ++i)
+            for (int i = 0; i < backList.Count; ++i)
             {
                 //Starting at largest number being 0
                 largestNum = 0;
                 curLargestIndex = 0;
 
                 //For the entire list
-                for (int j = 0; j < lengthOfList; ++j)
+                for (int j = 0; j < backList.Count; ++j)
                 {
                     //If the bool array still has this word as not used
-                    //and the number of it is largest than the current
+                    //and the number of it is larger than the current
                     if (!usedWords[j] && largestNum < backList[j].getNum())
                     {
                         //New largest number and index
@@ -542,7 +541,6 @@ namespace Word_Counter
                 //Add the word to the outputBox
                 outputBox.Items.Add(backList[curLargestIndex]);
             }
-
         }
 
         /// <summary>
@@ -561,7 +559,7 @@ namespace Word_Counter
             if (sortFreqButton.Text == FREQ_SYMBOL )
             {
                 //Disable the search bar
-                searchBox.Text = "Disabled while displaying by Frequency";
+                searchBox.Text = "Disabled while displaying by frequency";
                 searchBox.Enabled = false;
                 //We sort by frequency
                 SortByFrequency();
@@ -632,43 +630,40 @@ namespace Word_Counter
             //Sets the cursor back to default. Done!
             Cursor.Current = Cursors.Default;
 
+            //Show a dialog box with the results
             MessageBox.Show(tempString.ToString());
         }
 
         /// <summary>
-        /// Binary search of the backList list for a target
+        /// Binary search for the index of a string in a list
         /// </summary>
         /// <param name="target">Word to search</param>
+        /// <param name="wordFound">Results of search</param>
         /// <param name="lBounds">Left limit</param>
         /// <param name="rBounds">Right Limit</param>
         /// <returns>Index of where word is (or should be)</returns>
-        private int GetIndex ( string target, int lBounds = 0, int rBounds = -1 )
+        private int GetIndex(string target, ref bool wordFound, int lBounds = 0, int rBounds = -1 )
         {
-            int rightBounds;              //Will hold either the full list of rBounds
-            int leftBounds = lBounds;     //Left bounds starts at 0
-            int middleObj = 0;      //Holds what the middle object is
-            int comparisonResults;  //Holds the results of comparison between strings
-            bool wordFound = false; //Holds whether word was found or not
+            int middleObj = 0;          //Holds what the middle object is
+            int comparisonResults;      //Holds the results of comparison between strings
+
+            //Set the start state of the wordFound bool to false
+            wordFound = false;
 
             //If the number wasn't smaller on the right (or default)
             if (rBounds < lBounds)
             {
                 //Holds the number of items in outputBox
-                rightBounds = backList.Count - 1;
-            }
-            else
-            {
-                //Else we use parameter given
-                rightBounds = rBounds;
+                rBounds = backList.Count - 1;
             }
 
             //While right bounds is still larger and the word hasn't been found
-            while (leftBounds <= rightBounds && !wordFound)
+            while (lBounds <= rBounds && !wordFound)
             {
 
                 //Middle object is the right bounds plus the left bounds (total size)
                 //divided by 2
-                middleObj = (rightBounds + leftBounds) / 2;
+                middleObj = (rBounds + lBounds) / 2;
 
                 //Get the comparison between the two strings
                 comparisonResults =
@@ -679,18 +674,16 @@ namespace Word_Counter
                 {
                     //String was smaller alphabetically so we must move right bounds
                     //towards center - 1
-                    rightBounds = middleObj - 1;
+                    rBounds = middleObj - 1;
                 }
                 else if (comparisonResults > 0)
                 {
                     //String was higher alphabetically so we must move right bounds
                     //towards center + 1
-                    leftBounds = ++middleObj;
+                    lBounds = ++middleObj;
                 }
                 else
                 {
-                    //Increments object
-                    backList[middleObj].incrementNum();
                     //Word has been found
                     wordFound = true;
                 }
@@ -707,12 +700,15 @@ namespace Word_Counter
         /// <param name="e">Not used</param>
         private void searchBox_TextChanged(object sender, EventArgs e)
         {
+            //Passed bool not used
+            bool discard = false;
+
             //Get the first index of the word that is being searched for
-            int searchLeft = GetIndex(searchBox.Text);
+            int searchLeft = GetIndex(searchBox.Text, ref discard);
             //Get the last index of the word that is being serached for
             //Note: Use zz to simulate a large next word that is 
             //(unlikely) to exists
-            int searchRight = GetIndex(searchBox.Text + "zz");
+            int searchRight = GetIndex(searchBox.Text + "zz", ref discard);
 
             //Update the outputBox with the new values
             UpdateListBox(searchLeft, searchRight);
