@@ -1,6 +1,6 @@
 ﻿// @brief Read a file and output the number of times each word appears
 // @author Miguel Bermudez
-// @version 2016-05-26
+// @version 2016-06-07
 
 using System;
 using System.IO;
@@ -14,8 +14,8 @@ namespace Word_Counter
     {
         //List used behind the scenes
         private List<WordsCounted> backList;
-        private readonly string FREQ_SYMBOL = "▼";
-        private readonly string FREQ_SYMBOL_ALT = "Θ" ;
+        private static readonly string FREQ_SYMBOL = "▼";
+        private static readonly string FREQ_SYMBOL_ALT = "Θ" ;
 
         /// <summary>
         /// Initializes form
@@ -145,7 +145,8 @@ namespace Word_Counter
         /// <param name="iFile">Not used</param>
         private void StandardRead(string filePath)
         {
-            string tempString;  //Holds each word read
+            StringBuilder tempString = new StringBuilder();  //Holds each word read
+            string incompleteWord = ""; //Holds incomplete words
 
             //Gets all words from file
             string allFile = File.ReadAllText(filePath);
@@ -154,23 +155,46 @@ namespace Word_Counter
             string[] wordArray = allFile.Split();
 
             //for the length of created array of words
-            for (int i = 0; i < wordArray.Length; i++)
+            for (int i = 0; i < wordArray.Length; i++, tempString.Clear())
             {
-                //Strips punctuation
-                tempString = StripPunctuation(wordArray[i]);
-
-                //If word is not whitespace
-                if (!string.IsNullOrWhiteSpace(tempString))
+                //If there was an incomplete word before this one
+                if (incompleteWord != "")
                 {
-                    //If user doesn't care about case
-                    if (!caseSensitive.Checked)
+                    //Add the word to the temp string minus the '-'
+                    for (int j = 0; i < incompleteWord.Length - 1; ++j)
                     {
-                        //Change the word to lowercase
-                        tempString = tempString.ToLower();
+                        tempString.Append(incompleteWord[j]);
                     }
 
-                    //Updates list
-                    UpdateList(tempString);
+                    //Clear incomplete word
+                    incompleteWord = "";
+                }
+
+                //Strips punctuation
+                tempString.Append(StripPunctuation(wordArray[i]));
+
+                //If the temporary word is not null or a whitespace char
+                if (!string.IsNullOrWhiteSpace(tempString.ToString()))
+                {
+                    //If the last letter of the string is not a '-'
+                    if (tempString[tempString.Length - 1] != '-')
+                    {
+                        //If the user doesn't care about upper or lower case
+                        if (!caseSensitive.Checked)
+                        {
+                            //Updates list with all words lowercase
+                            UpdateList(tempString.ToString().ToLower());
+                        } else
+                        {
+                            //Updates list
+                            UpdateList(tempString.ToString());
+                        }
+                    }
+                    else
+                    {
+                        //The last letter is a '-' so word must be incomplete
+                        incompleteWord = tempString.ToString();
+                    }
                 }
             }
         }
@@ -255,7 +279,7 @@ namespace Word_Counter
 
                 //Add up the length of each word (letters in word)
                 getNumOfLetters +=
-                    backList[i].getWord().Length;
+                    (backList[i].getWord().Length * backList[i].getNum());
             }
 
             //Outputs results to labels
