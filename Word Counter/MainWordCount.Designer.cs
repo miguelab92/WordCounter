@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.outputBox = new System.Windows.Forms.ListBox();
             this.statsBox = new System.Windows.Forms.GroupBox();
             this.longestWordsShow = new System.Windows.Forms.Button();
@@ -55,6 +56,7 @@
             this.sortFreqButton = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.searchLabel = new System.Windows.Forms.Label();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.statsBox.SuspendLayout();
             this.optionsBox.SuspendLayout();
             this.SuspendLayout();
@@ -102,6 +104,7 @@
             this.longestWordsShow.Size = new System.Drawing.Size(15, 15);
             this.longestWordsShow.TabIndex = 10;
             this.longestWordsShow.Text = "╜";
+            this.toolTip.SetToolTip(this.longestWordsShow, "Show the longest word(s)");
             this.longestWordsShow.UseVisualStyleBackColor = true;
             this.longestWordsShow.Visible = false;
             this.longestWordsShow.Click += new System.EventHandler(this.longestWordsShow_Click);
@@ -227,6 +230,7 @@
             this.caseSensitive.Size = new System.Drawing.Size(255, 18);
             this.caseSensitive.TabIndex = 2;
             this.caseSensitive.Text = "Consider upper or lower case (Case-Sensitive)";
+            this.toolTip.SetToolTip(this.caseSensitive, "Differentiate between upper and lower case");
             this.caseSensitive.UseVisualStyleBackColor = true;
             this.caseSensitive.CheckedChanged += new System.EventHandler(this.caseSensitive_CheckedChanged);
             // 
@@ -238,6 +242,7 @@
             this.saveList.Size = new System.Drawing.Size(156, 18);
             this.saveList.TabIndex = 1;
             this.saveList.Text = "Save current list with stats";
+            this.toolTip.SetToolTip(this.saveList, "Save the list seen on the right along with the statistics when saving stats");
             this.saveList.UseVisualStyleBackColor = true;
             // 
             // characterCount
@@ -248,6 +253,7 @@
             this.characterCount.Size = new System.Drawing.Size(180, 18);
             this.characterCount.TabIndex = 0;
             this.characterCount.Text = "Count by character (not words)";
+            this.toolTip.SetToolTip(this.characterCount, "Count the letters and symbols that appear in the file, not the words");
             this.characterCount.UseVisualStyleBackColor = true;
             this.characterCount.CheckedChanged += new System.EventHandler(this.extraChars_CheckedChanged);
             // 
@@ -260,6 +266,7 @@
             this.selectFile.Size = new System.Drawing.Size(88, 30);
             this.selectFile.TabIndex = 3;
             this.selectFile.Text = "Select File";
+            this.toolTip.SetToolTip(this.selectFile, "Select file to analyze");
             this.selectFile.UseVisualStyleBackColor = true;
             this.selectFile.Click += new System.EventHandler(this.selectFile_Click);
             // 
@@ -272,6 +279,7 @@
             this.saveStatistics.Size = new System.Drawing.Size(88, 30);
             this.saveStatistics.TabIndex = 5;
             this.saveStatistics.Text = "Save Stats";
+            this.toolTip.SetToolTip(this.saveStatistics, "Save all statistics about this file onto a new text file");
             this.saveStatistics.UseVisualStyleBackColor = true;
             this.saveStatistics.Click += new System.EventHandler(this.saveStatistics_Click);
             // 
@@ -284,6 +292,7 @@
             this.clearFile.Size = new System.Drawing.Size(88, 30);
             this.clearFile.TabIndex = 6;
             this.clearFile.Text = "Clear";
+            this.toolTip.SetToolTip(this.clearFile, "Clear the list and all statistics");
             this.clearFile.UseVisualStyleBackColor = true;
             this.clearFile.Visible = false;
             this.clearFile.Click += new System.EventHandler(this.clearFile_Click);
@@ -309,6 +318,7 @@
             this.sortFreqButton.Size = new System.Drawing.Size(20, 15);
             this.sortFreqButton.TabIndex = 9;
             this.sortFreqButton.Text = "▼";
+            this.toolTip.SetToolTip(this.sortFreqButton, "Switch between sorting by frequency or alphabetically");
             this.sortFreqButton.UseVisualStyleBackColor = true;
             this.sortFreqButton.Visible = false;
             this.sortFreqButton.Click += new System.EventHandler(this.sortFreqButton_Click);
@@ -392,6 +402,7 @@
         private System.Windows.Forms.Button longestWordsShow;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.Label searchLabel;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
 
