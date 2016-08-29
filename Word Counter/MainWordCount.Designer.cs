@@ -242,7 +242,7 @@
             this.saveList.Size = new System.Drawing.Size(156, 18);
             this.saveList.TabIndex = 1;
             this.saveList.Text = "Save current list with stats";
-            this.toolTip.SetToolTip(this.saveList, "Save the list seen on the right along with the statistics when saving stats");
+            this.toolTip.SetToolTip(this.saveList, "Save the list seen on the left along with the statistics when saving stats");
             this.saveList.UseVisualStyleBackColor = true;
             // 
             // characterCount
@@ -348,7 +348,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(535, 269);
+            this.ClientSize = new System.Drawing.Size(531, 269);
             this.Controls.Add(this.searchLabel);
             this.Controls.Add(this.searchBox);
             this.Controls.Add(this.sortFreqButton);

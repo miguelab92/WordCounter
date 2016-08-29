@@ -7,3 +7,12 @@ C:\Users\Soulin\Documents\Programs\cSharp\Test Project\Word Counter\Word Counter
 C:\Users\Soulin\Documents\Programs\cSharp\Test Project\Word Counter\Word Counter\bin\Debug\Word Counter.pdb
 C:\Users\Soulin\Documents\Programs\cSharp\Test Project\Word Counter\Word Counter\obj\Debug\Word Counter.exe
 C:\Users\Soulin\Documents\Programs\cSharp\Test Project\Word Counter\Word Counter\obj\Debug\Word Counter.pdb
+C:\dev\Sources\WordCounter\Word Counter\bin\Debug\Word Counter.exe.config
+C:\dev\Sources\WordCounter\Word Counter\obj\Debug\Word Counter.exe
+C:\dev\Sources\WordCounter\Word Counter\obj\Debug\Word Counter.pdb
+C:\dev\Sources\WordCounter\Word Counter\bin\Debug\Word Counter.exe
+C:\dev\Sources\WordCounter\Word Counter\bin\Debug\Word Counter.pdb
+C:\dev\Sources\WordCounter\Word Counter\obj\Debug\Word Counter.csprojResolveAssemblyReference.cache
+C:\dev\Sources\WordCounter\Word Counter\obj\Debug\Word_Counter.wordCounter.resources
+C:\dev\Sources\WordCounter\Word Counter\obj\Debug\Word_Counter.Properties.Resources.resources
+C:\dev\Sources\WordCounter\Word Counter\obj\Debug\Word Counter.csproj.GenerateResource.Cache
